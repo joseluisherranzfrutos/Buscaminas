@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="ISO-8859-1">
+<title>Buscaminas</title>
+<script type="text/javascript" th:src="@{/js/myscript.js}"></script>
+<link rel="stylesheet" href="/css/mystyle.css">
+</head>
+<body>
+<h2>Buscaminas</h2>
+<div>
+<form th:action="@{/}" method="get">
+	<button>Nueva partida</button>
+</form>
+<br>
+<table>
+  <form id="myForm" th:action="@{/a}" method="post">
+    <input type="hidden" id="fila" name="fila"/>
+    <input type="hidden" id="columna" name="columna"/>
+    </form>
+	<tr th:each="fila:${session.tableroPlus.tablero}">
+		<td th:each="celda:${fila}">
+			<button class="celda" 
+				th:onclick="'abrir('+${celda.posicion.fila}+','+${celda.posicion.columna}+')'" 
+				th:oncontextmenu="'bandera('+${celda.posicion.fila}+','+${celda.posicion.columna}+')'">
+				<img th:if="${celda.isBandera}" src="/images/bandera.png" width=16px height=16px />
+				<img th:if="${!celda.isBandera and celda.isAbierto and celda.isHayMina}"				
+				src="/images/mina.png" width=16px height=16px/>
+				<span th:text="${celda.isAbierto and !celda.isHayMina ? celda.simbolo:'' }"/>
+			</button>
+		</td>
+	</tr>
+</table>
+<div th:if="${message}">
+	<h3 h3 th:text="#{${message}(${parametro})}"></h3>
+</div>
+</body>
+</html>
